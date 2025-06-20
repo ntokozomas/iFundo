@@ -1,0 +1,15 @@
+# mitochondria
+Mitochondria are the powerhouses of the cell. They generate energy by breaking down glucose during cellular respiration.
+
+# nucleus
+The nucleus controls the cell’s activities. It stores DNA, the instructions for building proteins.
+
+# chloroplasts
+Chloroplasts are found in plant cells. They capture sunlight and turn it into energy through photosynthesis.
+
+# ribosomes
+Ribosomes build proteins by assembling amino acids based on instructions from DNA.
+
+# cell membrane
+The cell membrane surrounds the cell. It controls what enters and leaves, like a gatekeeper.
+

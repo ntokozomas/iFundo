@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>iFundo Flashcards</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('/static/akwande.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Quicksand', sans-serif;
+            color: #333;
+        }
+
+        nav {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 1rem 2rem;
+            color: white;
+            font-weight: 600;
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .flashcard {
+            background: #fff176;
+            padding: 50px;
+            border-radius: 20px;
+            font-size: 22px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 0 20px 6px rgba(255, 241, 118, 0.8);
+            margin-bottom: 60px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .controls, .tracking {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .controls button, .tracking button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 8px;
+            background-color: #009966;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
+        }
+
+        .controls button:hover, .tracking button:hover {
+            background-color: #007f55;
+        }
+
+        .counter {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #222;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div>Flashcards</div>
+    <div><a href="/dashboard" style="color:white;text-decoration:none;">🏠 Back to Dashboard</a></div>
+</nav>
+
+<div class="container">
+    <div id="flashcard" class="flashcard">Loading flashcards...</div>
+    <div class="tracking">
+        <button onclick="markCorrect()">✅ I got it right</button>
+        <button onclick="markWrong()">❌ I got it wrong</button>
+    </div>
+    <div class="controls">
+        <button onclick="prevCard()">Previous</button>
+        <button onclick="nextCard()">Next</button>
+    </div>
+    <div class="counter" id="counter">Card 0 of 0 | ✅ 0 | ❌ 0</div>
+</div>
+
+<script>
+const S3_JSON_URL = "https://ifundo-past-paper1.s3.us-east-1.amazonaws.com/cards.json";
+let cards = [];
+let currentIndex = 0;
+let showingAnswer = false;
+let correctCount = 0;
+let wrongCount = 0;
+
+function updateCounter() {
+    const counter = document.getElementById('counter');
+    counter.textContent = `Card ${currentIndex + 1} of ${cards.length} | ✅ ${correctCount} | ❌ ${wrongCount}`;
+}
+
+function displayCard() {
+    const cardEl = document.getElementById('flashcard');
+    if (cards.length === 0) return;
+    const card = cards[currentIndex];
+    cardEl.textContent = showingAnswer ? card.answer : card.question;
+    updateCounter();
+}
+
+function nextCard() {
+    if (cards.length === 0) return;
+    currentIndex = (currentIndex + 1) % cards.length;
+    showingAnswer = false;
+    displayCard();
+}
+
+function prevCard() {
+    if (cards.length === 0) return;
+    currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+    showingAnswer = false;
+    displayCard();
+}
+
+function markCorrect() {
+    correctCount++;
+    nextCard();
+}
+
+function markWrong() {
+    wrongCount++;
+    nextCard();
+}
+
+fetch(S3_JSON_URL)
+    .then(response => response.json())
+    .then(data => {
+        cards = data;
+        currentIndex = 0;
+        displayCard();
+    })
+    .catch(err => {
+        document.getElementById('flashcard').textContent = 'Failed to load flashcards 😞';
+        console.error("Error fetching cards:", err);
+    });
+
+// Flip card on click
+const flashcardEl = document.getElementById('flashcard');
+flashcardEl.addEventListener('click', () => {
+    showingAnswer = !showingAnswer;
+    displayCard();
+});
+</script>
+
+</body>
+</html>

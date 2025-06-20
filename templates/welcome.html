@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Ifundo</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #gif-container {
+            width: 100%;
+            max-width: 400px;
+            opacity: 1;
+            transition: opacity 2s ease;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="gif-container">
+        <img src="{{ url_for('static', filename='ifundo.gif') }}" alt="Welcome GIF">
+    </div>
+
+    <script>
+        // After 3 seconds, start fade out
+        setTimeout(() => {
+            const gif = document.getElementById('gif-container');
+            gif.style.opacity = 0;
+
+            // After fade-out finishes (2 seconds), redirect
+            setTimeout(() => {
+                window.location.href = "{{ url_for('login') }}";
+            }, 2000);
+        }, 3000);
+    </script>
+</body>
+</html>

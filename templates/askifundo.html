@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ask iFundo 🤖</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url('/static/akwande.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(1.1) contrast(1.05) saturate(1.2);
+            animation: backgroundPulse 10s infinite alternate;
+        }
+
+        @keyframes backgroundPulse {
+            0% { filter: brightness(1.1) contrast(1.05) saturate(1.2); }
+            100% { filter: brightness(1.15) contrast(1.08) saturate(1.25); }
+        }
+
+        nav {
+            background: rgba(0,0,0,0.6);
+            padding: 1rem 2rem;
+            color: white;
+            font-weight: 600;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .menu-icon {
+            font-size: 26px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .chat-container {
+            flex: 1;
+            margin: 20px auto;
+            padding: 20px;
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.3), inset 0 0 15px rgba(255,255,255,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 10px;
+        }
+
+        .bubble {
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 20px;
+            max-width: 80%;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            line-height: 1.4;
+        }
+
+        .user {
+            background: linear-gradient(135deg, #009966, #00CC99);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+
+        .ifundo {
+            background: rgba(255,255,255,0.85);
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 20px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255,255,255,0.3);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 14px 20px;
+            border-radius: 30px;
+            border: none;
+            font-size: 16px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 16px;
+            background: linear-gradient(135deg, #009966, #00CC99);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="menu-icon">&#9776;</div>
+        <div>🎓 Ask iFundo Pro</div>
+    </nav>
+
+    <div class="chat-container">
+        <div class="messages" id="messages"></div>
+
+        <div class="input-container">
+            <input type="text" id="message" placeholder="Ask me anything..." required />
+            <button onclick="sendMessage()">Ask</button>
+        </div>
+    </div>
+
+    <script>
+        const messages = document.getElementById("messages");
+        const input = document.getElementById("message");
+
+        async function sendMessage() {
+            const userInput = input.value.trim();
+            if (!userInput) return;
+
+            appendMessage(userInput, "user");
+            input.value = "";
+            messages.scrollTop = messages.scrollHeight;
+
+            const res = await fetch("/ifundo", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userInput })
+            });
+
+            const data = await res.json();
+            appendMessage(data.response || "Something went wrong.", "ifundo");
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function appendMessage(text, sender) {
+            const wrapper = document.createElement("div");
+            wrapper.style.display = "flex";
+            wrapper.style.flexDirection = "column";
+            wrapper.style.alignItems = sender === "user" ? "flex-end" : "flex-start";
+
+            const nameTag = document.createElement("div");
+            nameTag.textContent = sender === "user" ? "You" : "iFundo 🤖";
+            nameTag.style.fontWeight = "600";
+            nameTag.style.fontSize = "14px";
+            nameTag.style.marginBottom = "5px";
+            nameTag.style.color = sender === "user" ? "#555" : "#009966";
+
+            const bubble = document.createElement("div");
+            bubble.className = `bubble ${sender}`;
+            bubble.textContent = text;
+
+            wrapper.appendChild(nameTag);
+            wrapper.appendChild(bubble);
+            messages.appendChild(wrapper);
+        }
+    </script>
+</body>
+</html>
