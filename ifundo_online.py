@@ -102,7 +102,7 @@ def listen():
             if WAKE_WORD in text:
                 print("🎤 Wake word detected.")
                 play_beep("wake_beeps.mp3")
-                speak_online("Hello, how can I you?")
+                speak_online("Hello, how can I help you")
                 
                 user_input = q.get()
                 print("🧠 User asked:", user_input)
