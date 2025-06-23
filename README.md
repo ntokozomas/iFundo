@@ -73,11 +73,12 @@ Final Notes
 - Titan and Polly are used only when connected to the internet
 - All components are modular—easily extendable for other subjects
 - Works without a screen if needed (purely voice-controlled)
+📌 Demo Video
+https://vimeo.com/1095356160
 📌 Architecture Diagram
 ![image](https://github.com/user-attachments/assets/5054bae3-6a40-4ce8-bae3-02e16af20df7)
 📌 An image of the actual pi
 ![my_pi](https://github.com/user-attachments/assets/1c3ffb78-c1fb-4952-b3e1-0f176f9e26cb)
-📌 Demo Video
-https://vimeo.com/1095356160
+
 
 
