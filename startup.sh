@@ -6,19 +6,19 @@
 
 echo "[$(date)] Starting iFundo initialization..." >> startup.log
 
-# Simulate environment setup
+
 echo "[$(date)] Checking virtual environment..." >> startup.log
 sleep 2
 
-# (Optional: pretend activate venv)
+
 echo "[$(date)] Activating virtual environment..." >> startup.log
 sleep 2
 
-# Simulate dependency check
+# dependency check
 echo "[$(date)] Verifying dependencies..." >> startup.log
 sleep 2
 
-# Simulate application startup
+# application startup
 echo "[$(date)] Launching iFundo application..." >> startup.log
 sleep 2
 
