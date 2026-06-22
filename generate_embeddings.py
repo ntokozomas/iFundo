@@ -51,13 +51,13 @@ def main():
             })
         else:
             skipped += 1
-            print(f"⚠️ Skipped: {prompt}")
+            print(f" Skipped: {prompt}")
 
     with open("knowledge_base/embeddings.json", "w", encoding="utf-8") as f:
 
         json.dump(enriched, f, indent=2)
 
-    print(f"✅ Done. Embedded {len(enriched)} entries. Skipped {skipped}.")
+    print(f" Done. Embedded {len(enriched)} entries. Skipped {skipped}.")
 
 if __name__ == "__main__":
     main()
