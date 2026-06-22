@@ -17,4 +17,4 @@ for entry in data:
 with open("embeddings.json", "w", encoding="utf-8") as f:
     json.dump(formatted, f, indent=2)
 
-print(f"✅ Saved {len(formatted)} formatted entries to embeddings.json")
+print(f" Saved {len(formatted)} formatted entries to embeddings.json")
